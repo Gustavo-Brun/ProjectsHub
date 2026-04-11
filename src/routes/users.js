@@ -7,4 +7,8 @@ router.post('/singup', function (req, res) {
   usersController.register(req, res);
 });
 
+router.post('/login', function (req, res) {
+  usersController.login(req, res);
+});
+
 module.exports = router;

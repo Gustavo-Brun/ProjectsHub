@@ -9,6 +9,16 @@ function create(username, password) {
   return database.executar(query);
 }
 
+function getOne(username) {
+  let query = `
+        SELECT id, username, password FROM Users WHERE username = '${username}';
+    `;
+
+  console.log('Running the following query: ' + query);
+  return database.executar(query);
+}
+
 module.exports = {
-  create
+  create,
+  getOne
 };
