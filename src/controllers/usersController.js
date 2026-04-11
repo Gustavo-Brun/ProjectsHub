@@ -10,9 +10,25 @@ function register(req, res) {
     res.status(400).send('password is required!');
   } else {
     usersModel
+      .getOne(username)
+      .then(function (res) {
+        if (res.length > 0) {
+          return res.status(403).send('Username already in use.');
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+        console.log('\n Unexpected error to verify user! Error: ', err.sqlMessage);
+        return res.status(500).json(err.sqlMessage);
+      });
+
+    usersModel
       .create(username, password)
       .then(function (res) {
-        res.status(201).json(res);
+        res.status(201).json({
+          id: res[0].id,
+          username: res[0].username
+        });
       })
       .catch(function (err) {
         console.log(err);
