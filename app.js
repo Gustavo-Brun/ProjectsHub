@@ -22,8 +22,9 @@ var medidasRouter = require("./src/routes/medidas");
 var aquariosRouter = require("./src/routes/aquarios");
 var empresasRouter = require("./src/routes/empresas");
 
-let usersRouter = required('./src/routes/users')
-let projectsRouter = required('./src/routes/projects')
+const usersRouter = required('./src/routes/users')
+const projectsRouter = required('./src/routes/projects')
+const reviewsRouter = required('./src/routes/reviews')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,6 +35,9 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use('/users', usersRouter);
 app.use('/projects', projectsRouter);
+app.use('/reviews', reviewsRouter);
+
+
 app.use("/usuarios", usuarioRouter);
 app.use("/avisos", avisosRouter);
 app.use("/medidas", medidasRouter);

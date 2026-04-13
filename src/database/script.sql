@@ -15,3 +15,14 @@ CREATE TABLE Projects (
     picture VARCHAR(255) UNIQUE,
     description VARCHAR(45),
 );
+
+CREATE TABLE Reviews (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(20) NOT NULL,
+    text VARCHAR(255) NOT NULL,
+    rating INT NOT NULL,
+    CHECK (rating >= 0 AND rating <= 5),
+    projectId INT NOT NULL,
+    FOREIGN KEY (projectId) REFERENCES Projects(id),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+)
