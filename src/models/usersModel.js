@@ -1,7 +1,7 @@
-var database = require('../database/config');
+const database = require('../database/config');
 
 function create(username, password) {
-  let query = `
+  const query = `
         INSERT INTO Users (username, password) VALUES ('${username}', '${password}');
     `;
 
@@ -10,7 +10,7 @@ function create(username, password) {
 }
 
 function getOne(username) {
-  let query = `
+  const query = `
         SELECT id, username, password FROM Users WHERE username = '${username}';
     `;
 

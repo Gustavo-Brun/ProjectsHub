@@ -1,8 +1,7 @@
-let usersModel = require('../models/usersModel');
+const usersModel = require('../models/usersModel');
 
 function register(req, res) {
-  let username = req.body.username;
-  let password = req.body.password;
+  const { username, password } = req.body;
 
   if (username == undefined) {
     res.status(400).send('username is required!');
@@ -39,8 +38,7 @@ function register(req, res) {
 }
 
 function login(req, res) {
-  let username = req.body.username;
-  let password = req.body.password;
+  const { username, password } = req.body;
 
   if (username == undefined) {
     res.status(400).send('username is required!');
