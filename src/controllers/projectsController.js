@@ -38,6 +38,20 @@ function create(req, res) {
     });
 }
 
+function listAll(req, res) {
+  projectsModel
+    .listAll()
+    .then(function (res) {
+      res.status(200).json(res);
+    })
+    .catch(function (err) {
+      console.log(err);
+      console.log('\n Unexpected error to list projects! Error: ', err.sqlMessage);
+      res.status(500).json(err.sqlMessage);
+    });
+}
+
 module.exports = {
-  create
+  create,
+  listAll
 };

@@ -18,7 +18,17 @@ function create(moodleId, title, picture, description) {
   return database.executar(query);
 }
 
+function listAll() {
+  const query = `
+        SELECT * FROM Projects;
+    `;
+
+  console.log('Running the following query: ' + query);
+  return database.executar(query);
+}
+
 module.exports = {
   create,
-  getByMoodleId
+  getByMoodleId,
+  listAll
 };
