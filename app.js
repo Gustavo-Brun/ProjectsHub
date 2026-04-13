@@ -23,6 +23,7 @@ var aquariosRouter = require("./src/routes/aquarios");
 var empresasRouter = require("./src/routes/empresas");
 
 let usersRouter = required('./src/routes/users')
+let projectsRouter = required('./src/routes/projects')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,7 +32,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 app.use("/", indexRouter);
-app.use('/users', usersRouter)
+app.use('/users', usersRouter);
+app.use('/projects', projectsRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/avisos", avisosRouter);
 app.use("/medidas", medidasRouter);

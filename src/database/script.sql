@@ -4,6 +4,14 @@ USE ProjectsHub;
 
 CREATE TABLE Users (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(20) UNIQUE,
-    password VARCHAR(20)
+    username VARCHAR(20) UNIQUE NOT NULL,
+    password VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Projects (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    moodleId INT UNIQUE NOT NULL,
+    title VARCHAR(20) UNIQUE NOT NULL,
+    picture VARCHAR(255) UNIQUE,
+    description VARCHAR(45),
 );
