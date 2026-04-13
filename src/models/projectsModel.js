@@ -27,8 +27,18 @@ function listAll() {
   return database.executar(query);
 }
 
+function getById(id) {
+  const query = `
+        SELECT * FROM Projects LEFT JOIN Reviews ON Projects.id = Reviews.projectId WHERE Projects.id = '${id}';
+    `;
+
+  console.log('Running the following query: ' + query);
+  return database.executar(query);
+}
+
 module.exports = {
   create,
   getByMoodleId,
-  listAll
+  listAll,
+  getById
 };

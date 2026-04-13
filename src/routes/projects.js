@@ -12,4 +12,8 @@ router.get('/list', function (req, res) {
   projectsController.listAll(req, res);
 });
 
+router.get('/:id', function (req, res) {
+  projectsController.getById(req, res);
+});
+
 module.exports = router;

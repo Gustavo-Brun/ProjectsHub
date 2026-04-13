@@ -51,7 +51,27 @@ function listAll(req, res) {
     });
 }
 
+function getById(req, res) {
+  const { id } = req.paramns;
+
+  if (id == undefined) {
+    res.status(400).send('param id is required!');
+  }
+
+  projectsModel
+    .getById(id)
+    .then(function (res) {
+      res.status(200).json(res);
+    })
+    .catch(function (err) {
+      console.log(err);
+      console.log('\n Unexpected error to get project details! Error: ', err.sqlMessage);
+      res.status(500).json(err.sqlMessage);
+    });
+}
+
 module.exports = {
   create,
-  listAll
+  listAll,
+  getById
 };
