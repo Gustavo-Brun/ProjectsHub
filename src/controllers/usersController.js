@@ -10,8 +10,8 @@ function register(req, res) {
   } else {
     usersModel
       .getOne(username)
-      .then(function (res) {
-        if (res.length > 0) {
+      .then(function (data) {
+        if (data.length > 0) {
           return res.status(403).send('Username already in use.');
         }
       })
@@ -23,10 +23,10 @@ function register(req, res) {
 
     usersModel
       .create(username, password)
-      .then(function (res) {
+      .then(function (data) {
         res.status(201).json({
-          id: res[0].id,
-          username: res[0].username
+          id: data[0].id,
+          username: data[0].username
         });
       })
       .catch(function (err) {
@@ -47,12 +47,12 @@ function login(req, res) {
   } else {
     usersModel
       .getOne(username)
-      .then(function (res) {
-        if (res.length > 0) {
-          if (res[0].password == password) {
+      .then(function (data) {
+        if (data.length > 0) {
+          if (data[0].password == password) {
             res.status(200).json({
-              id: res[0].id,
-              username: res[0].username
+              id: data[0].id,
+              username: data[0].username
             });
           } else {
             res.status(403).send('Incorrect username or password!');

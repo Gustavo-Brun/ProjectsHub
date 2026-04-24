@@ -14,7 +14,7 @@ function create(req, res) {
   } else {
     reviewsModel
       .create(projectId, title, text, rating)
-      .then(function (res) {
+      .then(function (data) {
         res.status(201);
       })
       .catch(function (err) {

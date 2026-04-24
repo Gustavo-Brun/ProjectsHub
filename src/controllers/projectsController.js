@@ -12,8 +12,8 @@ function create(req, res) {
   } else
     projectsModel
       .getByMoodleId(moodleId)
-      .then(function (res) {
-        if (res.length > 0) {
+      .then(function (data) {
+        if (data.length > 0) {
           return res.status(403).send('Project already registered.');
         }
       })
@@ -25,10 +25,10 @@ function create(req, res) {
 
   projectsModel
     .create(moodleId, title, picture, description)
-    .then(function (res) {
+    .then(function (data) {
       res.status(201).json({
-        id: res[0].id,
-        title: res[0].title
+        id: data[0].id,
+        title: data[0].title
       });
     })
     .catch(function (err) {
@@ -41,8 +41,8 @@ function create(req, res) {
 function listAll(req, res) {
   projectsModel
     .listAll()
-    .then(function (res) {
-      res.status(200).json(res);
+    .then(function (data) {
+      res.status(200).json(data);
     })
     .catch(function (err) {
       console.log(err);
@@ -60,8 +60,8 @@ function getById(req, res) {
 
   projectsModel
     .getById(id)
-    .then(function (res) {
-      res.status(200).json(res);
+    .then(function (data) {
+      res.status(200).json(data);
     })
     .catch(function (err) {
       console.log(err);
