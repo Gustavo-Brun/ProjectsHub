@@ -80,7 +80,7 @@
     formData.append('githubUrl', github_input.value);
     formData.append('title', title_input.value);
     formData.append('description', description_textarea.value);
-    formData.append('picture', picture_input.value);
+    formData.append('picture', picture_input.files[0]);
     formData.append('author', author_input.value);
 
     fetch('/projects/create', {
@@ -88,12 +88,15 @@
       body: formData
     })
       .then((res) => {
-        if (res.status == 409) {
+        if (res.ok) {
+          return;
+          window.location = '../catalog/index.html';
+        } else if (res.status == 409) {
           alert(
             `Um projeto com o Link '${github_input.value}' e/ou o Título '${title_input.value}' já foi cadastrado.`
           );
         } else {
-          window.location = '../catalog/index.html';
+          alert('Opss, algo deu errado. Tente novamente mais tarde!');
         }
       })
       .catch((err) => {

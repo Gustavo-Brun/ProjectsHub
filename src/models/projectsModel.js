@@ -10,13 +10,29 @@ function getExistingProject(title, githubUrl) {
 }
 
 function create(title, description, picture, author, githubUrl) {
-  const treatedDescription = description ? `${description}` : null;
-  const treatedPicture = picture ? `${picture}` : null;
-  const treatedAuthor = author ? `${author}` : null;
+  let query = 'INSERT INTO Projects (title, description, picture, author, githubUrl) VALUES';
 
-  const query = `
-        INSERT INTO Projects (title, description, picture, author, githubUrl) VALUES ('${title}', ${treatedDescription}, ${treatedPicture}, ${treatedAuthor}, '${githubUrl}');
-    `;
+  query += ` ("${title}", `;
+
+  if (description) {
+    query += `"${description}", `;
+  } else {
+    query += `null, `;
+  }
+
+  if (picture) {
+    query += `"${picture}", `;
+  } else {
+    query += `null, `;
+  }
+
+  if (author) {
+    query += `"${author}", `;
+  } else {
+    query += `null, `;
+  }
+
+  query += `"${githubUrl}");`;
 
   console.log('Running the following query: ' + query);
   return database.executar(query);

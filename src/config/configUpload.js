@@ -1,6 +1,6 @@
 const multer = require('multer');
 
-const diretorio = 'public/assets/';
+const diretorio = 'public/pictures/';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
