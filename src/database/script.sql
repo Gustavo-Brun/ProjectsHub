@@ -10,10 +10,11 @@ CREATE TABLE Users (
 
 CREATE TABLE Projects (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    moodleId INT UNIQUE NOT NULL,
     title VARCHAR(20) UNIQUE NOT NULL,
     picture VARCHAR(255) UNIQUE,
     description VARCHAR(45),
+    author VARCHAR(20),
+    githubUrl VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE Reviews (

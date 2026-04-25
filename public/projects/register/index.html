@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
+    <meta content="width=device-width, initial-scale=1.0" />
+    <title>Project Register</title>
+    <link
+      rel="stylesheet"
+      href="../styles.shared.css"
+    />
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
+  </head>
+
+  <body>
+    <div class="form_container">
+      <div class="input_container">
+        <h1>Cadastre seu Projeto!</h1>
+        <label for="github">Link do GitHub</label>
+        <input
+          id="github_input"
+          type="text"
+          placeholder="https://github.com/Gustavo-Brun/ProjectsHub"
+        />
+      </div>
+      <div class="input_container">
+        <label for="title">Título</label>
+        <input
+          id="title_input"
+          type="text"
+          placeholder="ProjectsHub"
+        />
+      </div>
+      <div class="input_container">
+        <label for="description">Descrição</label>
+        <span>opcional</span>
+        <textarea
+          id="description_textarea"
+          placeholder="Lorem ipsum dolor sit amet consectetur adipiscing elit."
+        ></textarea>
+      </div>
+      <div class="input_container">
+        <label for="picture">Imagem/Thumbnail</label>
+        <span>opcional</span>
+        <input
+          id="picture_input"
+          type="file"
+        />
+      </div>
+      <div class="input_container">
+        <label for="author">Autor(a)</label>
+        <span>opcional</span>
+        <input
+          id="author_input"
+          type="text"
+          placeholder="John Doe"
+        />
+      </div>
+
+      <button onclick="send()">Cadastrar Projeto</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  function send() {
+    if (!github_input.value.includes('github.com/')) {
+      alert('Insira um link de repositório válido!');
+    } else if (title_input.value.length < 3) {
+      alert('O Título deve conter ao menos 3 caracteres.');
+    }
+
+    const formData = new FormData();
+    formData.append('githubUrl', github_input.value);
+    formData.append('title', title_input.value);
+    formData.append('description', description_textarea.value);
+    formData.append('picture', picture_input.value);
+    formData.append('author', author_input.value);
+
+    fetch('/projects/create', {
+      method: 'POST',
+      body: formData
+    })
+      .then((res) => {
+        if (res.status == 409) {
+          alert(
+            `Um projeto com o Link '${github_input.value}' e/ou o Título '${title_input.value}' já foi cadastrado.`
+          );
+        } else {
+          window.location = '../catalog/index.html';
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Ops, algo deu errado. Tente novamente mais tarde!');
+      });
+  }
+</script>

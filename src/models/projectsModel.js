@@ -1,17 +1,21 @@
 const database = require('../database/config');
 
-function getByMoodleId(moodleId) {
+function getExistingProject(title, githubUrl) {
   const query = `
-        SELECT id FROM Projects WHERE moodleId = '${moodleId}';
+        SELECT id FROM Projects WHERE title = '${title}' OR githubUrl = '${githubUrl}';
     `;
 
   console.log('Running the following query: ' + query);
   return database.executar(query);
 }
 
-function create(moodleId, title, picture, description) {
+function create(title, description, picture, author, githubUrl) {
+  const treatedDescription = description ? `${description}` : null;
+  const treatedPicture = picture ? `${picture}` : null;
+  const treatedAuthor = author ? `${author}` : null;
+
   const query = `
-        INSERT INTO Projects (moodleId, title, picture, description) VALUES ('${moodleId}', '${title}', '${picture}', '${description}');
+        INSERT INTO Projects (title, description, picture, author, githubUrl) VALUES ('${title}', ${treatedDescription}, ${treatedPicture}, ${treatedAuthor}, '${githubUrl}');
     `;
 
   console.log('Running the following query: ' + query);
@@ -38,7 +42,7 @@ function getById(id) {
 
 module.exports = {
   create,
-  getByMoodleId,
+  getExistingProject,
   listAll,
   getById
 };

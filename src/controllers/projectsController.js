@@ -1,20 +1,34 @@
 const projectsModel = require('../models/projectsModel');
 
 function create(req, res) {
-  const picture = req.file.filename;
+  const picture = req.file?.filename;
 
-  const { moodleId, title, description } = req.body;
+  const { title, description, author, githubUrl } = req.body;
 
-  if (moodleId == undefined) {
-    res.status(400).send('moodleId is required!');
+  if (githubUrl == undefined) {
+    res.status(400).send('githubUrl is required!');
   } else if (title == undefined) {
     res.status(400).send('title is required!');
   } else
     projectsModel
-      .getByMoodleId(moodleId)
+      .getExistingProject(title, githubUrl)
       .then(function (data) {
         if (data.length > 0) {
-          return res.status(403).send('Project already registered.');
+          return res.status(409).send('Project already registered.');
+        } else {
+          projectsModel
+            .create(title, description, picture, author, githubUrl)
+            .then(function (data) {
+              res.status(201).json({
+                sucess: true,
+                id: data.insertId
+              });
+            })
+            .catch(function (err) {
+              console.log(err);
+              console.log('\n Unexpected error to create project! Error: ', err.sqlMessage);
+              res.status(500).json(err.sqlMessage);
+            });
         }
       })
       .catch(function (err) {
@@ -22,20 +36,6 @@ function create(req, res) {
         console.log('\n Unexpected error to verify project! Error: ', err.sqlMessage);
         return res.status(500).json(err.sqlMessage);
       });
-
-  projectsModel
-    .create(moodleId, title, picture, description)
-    .then(function (data) {
-      res.status(201).json({
-        id: data[0].id,
-        title: data[0].title
-      });
-    })
-    .catch(function (err) {
-      console.log(err);
-      console.log('\n Unexpected error to create project! Error: ', err.sqlMessage);
-      res.status(500).json(err.sqlMessage);
-    });
 }
 
 function listAll(req, res) {
