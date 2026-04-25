@@ -11,10 +11,12 @@ CREATE TABLE Users (
 CREATE TABLE Projects (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(20) UNIQUE NOT NULL,
+    githubUrl VARCHAR(255) UNIQUE NOT NULL,
     picture VARCHAR(255) UNIQUE,
     description VARCHAR(45),
-    author VARCHAR(20),
-    githubUrl VARCHAR(255) UNIQUE NOT NULL
+    fkUser INT UNIQUE NOT NULL,
+    CONSTRAINT fk_projects_user FOREIGN KEY(fkUser)
+        REFERENCES Users(id)
 );
 
 CREATE TABLE Reviews (

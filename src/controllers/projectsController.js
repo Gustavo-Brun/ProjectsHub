@@ -2,13 +2,14 @@ const projectsModel = require('../models/projectsModel');
 
 function create(req, res) {
   const picture = req.file?.filename;
-
-  const { title, description, author, githubUrl } = req.body;
+  const { title, githubUrl, description, userId } = req.body;
 
   if (githubUrl == undefined) {
     res.status(400).send('githubUrl is required!');
   } else if (title == undefined) {
     res.status(400).send('title is required!');
+  } else if (userId == undefined) {
+    res.status(400).send('userId is required!');
   } else
     projectsModel
       .getExistingProject(title, githubUrl)
@@ -17,12 +18,9 @@ function create(req, res) {
           return res.status(409).send('Project already registered.');
         } else {
           projectsModel
-            .create(title, description, picture, author, githubUrl)
+            .create(title, githubUrl, picture, description, userId)
             .then(function (data) {
-              res.status(201).json({
-                sucess: true,
-                id: data.insertId
-              });
+              res.status(201);
             })
             .catch(function (err) {
               console.log(err);

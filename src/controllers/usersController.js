@@ -12,27 +12,27 @@ function register(req, res) {
       .getOne(username)
       .then(function (data) {
         if (data.length > 0) {
-          return res.status(403).send('Username already in use.');
+          return res.status(409).send('Username already in use.');
+        } else {
+          usersModel
+            .create(username, password)
+            .then(function (data) {
+              res.status(201).json({
+                sucess: true,
+                userId: data.insertId
+              });
+            })
+            .catch(function (err) {
+              console.log(err);
+              console.log('\n Unexpected error to create user! Error: ', err.sqlMessage);
+              res.status(500).json(err.sqlMessage);
+            });
         }
       })
       .catch(function (err) {
         console.log(err);
         console.log('\n Unexpected error to verify user! Error: ', err.sqlMessage);
         return res.status(500).json(err.sqlMessage);
-      });
-
-    usersModel
-      .create(username, password)
-      .then(function (data) {
-        res.status(201).json({
-          id: data[0].id,
-          username: data[0].username
-        });
-      })
-      .catch(function (err) {
-        console.log(err);
-        console.log('\n Unexpected error to create user! Error: ', err.sqlMessage);
-        res.status(500).json(err.sqlMessage);
       });
   }
 }
