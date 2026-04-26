@@ -7,7 +7,7 @@ router.post('/signup', function (req, res) {
   usersController.register(req, res);
 });
 
-router.post('/login', function (req, res) {
+router.post('/signin', function (req, res) {
   usersController.login(req, res);
 });
 

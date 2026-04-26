@@ -51,8 +51,8 @@ function login(req, res) {
         if (data.length > 0) {
           if (data[0].password == password) {
             res.status(200).json({
-              id: data[0].id,
-              username: data[0].username
+              sucess: true,
+              userId: data[0].id
             });
           } else {
             res.status(403).send('Incorrect username or password!');

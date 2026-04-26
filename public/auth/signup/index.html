@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
+    <meta content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link
+      rel="stylesheet"
+      href="../styles.shared.css"
+    />
+  </head>
+
+  <body>
+    <div class="form_container">
+      <div class="input_container">
+        <h1>Bem vindo(a)!</h1>
+        <label for="username">Nome/Apelido</label>
+        <span>Exibido apenas com sua permissão.</span>
+        <input
+          id="username_input"
+          type="text"
+          placeholder="John Doe"
+        />
+      </div>
+      <div class="input_container">
+        <label for="password">Senha</label>
+        <input
+          id="password_input"
+          type="text"
+          placeholder="******"
+        />
+      </div>
+
+      <button onclick="signUp()">Criar Conta</button>
+
+      <p>Já tem uma conta? <a href="/auth/signin">Faça login</a></p>
+    </div>
+  </body>
+</html>
+
+<script>
+  function signUp() {
+    const username = username_input.value;
+    const password = password_input.value;
+
+    if (username.length < 3) {
+      return alert('Seu nome de usuário deve conter ao menos 3 caracteres.');
+    } else if (password.length < 4) {
+      return alert('Sua senha deve conter ao menos 4 caracteres.');
+    }
+
+    fetch('/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    })
+      .then((res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            sessionStorage.userId = data.userId;
+            window.location = '/projects/catalog';
+          });
+        } else if (res.status == 409) {
+          alert(`O nome de usuário '${username}' já foi cadastrado.`);
+        } else {
+          alert('Opss, algo deu errado. Tente novamente mais tarde!');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Ops, algo deu errado. Tente novamente mais tarde!');
+      });
+  }
+</script>

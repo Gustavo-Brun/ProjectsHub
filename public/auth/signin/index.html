@@ -7,19 +7,18 @@
       content="IE=edge"
     />
     <meta content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
+    <title>Sign In</title>
     <link
       rel="stylesheet"
-      href="styles.css"
+      href="../styles.shared.css"
     />
   </head>
 
   <body>
     <div class="form_container">
       <div class="input_container">
-        <h1>Bem vindo(a)!</h1>
+        <h1>Fazer Login</h1>
         <label for="username">Nome/Apelido</label>
-        <span>Exibido apenas com sua permissão.</span>
         <input
           id="username_input"
           type="text"
@@ -35,13 +34,15 @@
         />
       </div>
 
-      <button onclick="signUp()">Criar Conta</button>
+      <button onclick="signIn()">Entrar</button>
+
+      <p>Não tem conta? <a href="/auth/signup">Crie uma</a></p>
     </div>
   </body>
 </html>
 
 <script>
-  function signUp() {
+  function signIn() {
     const username = username_input.value;
     const password = password_input.value;
 
@@ -51,7 +52,7 @@
       return alert('Sua senha deve conter ao menos 4 caracteres.');
     }
 
-    fetch('/users/signup', {
+    fetch('/users/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -65,10 +66,10 @@
         if (res.ok) {
           res.json().then((data) => {
             sessionStorage.userId = data.userId;
-            window.location = '../projects/catalog';
+            window.location = '/projects/catalog';
           });
-        } else if (res.status == 409) {
-          alert(`O nome de usuário '${username}' já foi cadastrado.`);
+        } else if (res.status == 403) {
+          alert(`Nome de usuário ou senha incorretos.`);
         } else {
           alert('Opss, algo deu errado. Tente novamente mais tarde!');
         }
