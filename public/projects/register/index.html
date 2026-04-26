@@ -8,6 +8,9 @@
     />
     <meta content="width=device-width, initial-scale=1.0" />
     <title>Project Register</title>
+
+    <script src="/js/middleware.js"></script>
+
     <link
       rel="stylesheet"
       href="../styles.shared.css"
@@ -18,7 +21,7 @@
     />
   </head>
 
-  <body>
+  <body onload="validateSession()">
     <div class="form_container">
       <div class="input_container">
         <h1>Cadastre seu Projeto!</h1>
