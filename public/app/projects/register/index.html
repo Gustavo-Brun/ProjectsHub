@@ -56,15 +56,6 @@
           type="file"
         />
       </div>
-      <div class="input_container">
-        <label for="author">Autor(a)</label>
-        <span>opcional</span>
-        <input
-          id="author_input"
-          type="text"
-          placeholder="John Doe"
-        />
-      </div>
 
       <button onclick="send()">Cadastrar Projeto</button>
     </div>
@@ -80,7 +71,7 @@
     const userId = sessionStorage.userId;
 
     if (!userId) {
-      return (window.location = '../../signup');
+      return (window.location = '/auth/signup');
     } else if (!githubUrl.includes('github.com/')) {
       return alert('Insira um link de repositório válido!');
     } else if (title.length < 3) {
@@ -102,7 +93,7 @@
     })
       .then((res) => {
         if (res.ok) {
-          window.location = '../catalog';
+          window.location = '/app/projects/catalog';
         } else if (res.status == 409) {
           alert(`Um projeto com o Link '${githubUrl}' e/ou o Título '${title}' já foi cadastrado.`);
         } else {

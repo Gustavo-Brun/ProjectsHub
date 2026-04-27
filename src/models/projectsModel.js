@@ -10,7 +10,7 @@ function getExistingProject(title, githubUrl) {
 }
 
 function create(title, githubUrl, picture, description, userId) {
-  let query = 'INSERT INTO Projects (title, githubUrl, picture, description,  userId) VALUES';
+  let query = 'INSERT INTO Projects (title, githubUrl, picture, description,  fkUser) VALUES';
 
   query += ` ("${title}", `;
   query += `"${githubUrl}", `;
@@ -35,7 +35,7 @@ function create(title, githubUrl, picture, description, userId) {
 
 function listAll() {
   const query = `
-        SELECT * FROM Projects;
+        SELECT id, title, picture FROM Projects;
     `;
 
   console.log('Running the following query: ' + query);

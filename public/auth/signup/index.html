@@ -19,7 +19,6 @@
       <div class="input_container">
         <h1>Bem vindo(a)!</h1>
         <label for="username">Nome/Apelido</label>
-        <span>Exibido apenas com sua permissão.</span>
         <input
           id="username_input"
           type="text"
@@ -30,7 +29,7 @@
         <label for="password">Senha</label>
         <input
           id="password_input"
-          type="text"
+          type="password"
           placeholder="******"
         />
       </div>
@@ -67,7 +66,7 @@
         if (res.ok) {
           res.json().then((data) => {
             sessionStorage.userId = data.userId;
-            window.location = '/projects/catalog';
+            window.location = '/app/projects/catalog';
           });
         } else if (res.status == 409) {
           alert(`O nome de usuário '${username}' já foi cadastrado.`);

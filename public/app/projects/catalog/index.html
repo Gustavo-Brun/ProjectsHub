@@ -1,0 +1,158 @@
+p<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Projects List</title>
+
+    <script src="/js/middleware.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="../styles.shared.css"
+    />
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
+  </head>
+
+  <body onload="(validateSession(), getProjects())">
+    <h1>Projetos disponíveis</h1>
+
+    <div class="main_container">
+      <div class="input_container">
+        <input
+          oninput="filter()"
+          id="search_input"
+          type="text"
+          placeholder="Busque pelo título"
+        />
+
+        <button onclick="window.location = '/app/projects/register'">+</button>
+      </div>
+
+      <ul id="cards_container"></ul>
+    </div>
+
+    <footer>
+      <div class="actions_container">
+        <button
+          onclick="(sessionStorage.clear(), window.location.reload())"
+          class="action_button"
+        >
+          <img
+            src="/assets/imgs/logout.png"
+            alt="Logout button"
+          />
+        </button>
+
+        <a
+          class="action_link"
+          href="/index.html"
+        >
+          <img
+            src="/assets/imgs/home.png"
+            alt="Return to home button"
+          />
+        </a>
+      </div>
+      <span>
+        Made with 💙 by
+        <a
+          href="https://github.com/Gustavo-Brun/"
+          target="blank"
+          aria-label="Author's GitHub Link"
+        >
+          Gustavo Brun
+        </a>
+      </span>
+    </footer>
+  </body>
+</html>
+
+<script>
+  const cards = [];
+
+  function getProjects() {
+    fetch('/projects/list', {
+      method: 'GET'
+    })
+      .then((res) => {
+        res.json().then((data) => {
+          let content = '';
+          for (let i = 1; i <= data.length; i++) {
+            addCard(
+              data[i - 1].id,
+              data[i - 1].picture ? data[i - 1].picture : 'no-image.jpg',
+              data[i - 1].title
+            );
+
+            renderCards(cards);
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Ops, algo deu errado. Tente novamente mais tarde!');
+      });
+  }
+
+  function redirect(id) {
+    sessionStorage.projectId = id;
+
+    window.location = '/app/projects/details';
+  }
+
+  function addCard(id, picture, title) {
+    cards.push({
+      id,
+      picture,
+      title
+    });
+  }
+
+  function renderCards(data) {
+    let content = '';
+
+    if (data.length > 0) {
+      for (let i = data.length; i > 0; i--) {
+        content += `
+          <li onclick="redirect(${data[i - 1].id})">
+            <img src="/pictures/${data[i - 1].picture ? data[i - 1].picture : 'no-image.jpg'}">
+            <span>${data[i - 1].title}</span>
+          </li>
+        `;
+      }
+    } else {
+      content = `
+          <p>
+            Não encontrado.
+          </p>
+        `;
+    }
+
+    cards_container.innerHTML = content;
+  }
+
+  function filter() {
+    const text = search_input.value;
+
+    if (text == '') {
+      return renderCards(cards);
+    }
+
+    let filteredCards = [];
+
+    filteredCards = cards.filter((item) => item.title.includes(text));
+
+    return renderCards(filteredCards);
+  }
+</script>

@@ -20,7 +20,7 @@ function create(req, res) {
           projectsModel
             .create(title, githubUrl, picture, description, userId)
             .then(function (data) {
-              res.status(201);
+              res.status(201).send();
             })
             .catch(function (err) {
               console.log(err);
@@ -50,7 +50,7 @@ function listAll(req, res) {
 }
 
 function getById(req, res) {
-  const { id } = req.paramns;
+  const { id } = req.params;
 
   if (id == undefined) {
     res.status(400).send('param id is required!');
