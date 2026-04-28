@@ -82,7 +82,7 @@ footer span {
 footer .actions_container .action_link {
   position: fixed;
   top: 10px;
-  right: 10px;
+  left: 10px;
 }
 
 footer .actions_container .action_button {

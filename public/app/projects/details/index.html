@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
+    <meta content="width=device-width, initial-scale=1.0" />
+    <title>Project Details</title>
+
+    <script src="/js/middleware.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="../styles.shared.css"
+    />
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
+  </head>
+
+  <body onload="(validateSession(), getProject())">
+    <div class="main_container">
+      <div id="card_container"></div>
+    </div>
+
+    <footer>
+      <div class="actions_container">
+        <button
+          onclick="(sessionStorage.clear(), window.location.reload())"
+          class="action_button"
+        >
+          <img
+            src="/assets/imgs/logout.png"
+            alt="Logout button"
+          />
+        </button>
+
+        <a
+          class="action_link"
+          href="/app/projects/catalog"
+        >
+          <img
+            src="/assets/imgs/return.png"
+            alt="Return button"
+          />
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<script>
+  function getProject() {
+    const projectId = sessionStorage.projectId;
+
+    if (!projectId) {
+      return (window.location = '/app/projects/catalog');
+    }
+
+    fetch(`/projects/${projectId}`, {
+      method: 'GET'
+    })
+      .then((res) => {
+        if (!res.ok) {
+          if (res.status == 400) {
+            alert(`Algo deu errado ao selecionar o projeto.`);
+          } else {
+            alert('Opss, algo deu errado. Tente novamente mais tarde!');
+          }
+
+          return;
+        }
+
+        res.json().then((data) => {
+          const title = data[0].title;
+          const picture = data[0].picture ? data[0].picture : 'no-image.jpg';
+          const description = data[0].description ? data[0].description : 'Sem descrição.';
+          const github = data[0].githubUrl;
+
+          renderDetails(title, picture, description, github);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Ops, algo deu errado. Tente novamente mais tarde!');
+      });
+  }
+
+  function renderDetails(title, picture, description, github) {
+    card_container.innerHTML = `
+        <img src="/pictures/${picture}" />
+        <h1>${title}</h1>
+        <p>${description}</p>
+        <a
+          class="action_link"
+          href="${github}"
+        >
+          <img
+            src="/assets/imgs/github.png"
+            alt="Github button"
+          />
+        </a>
+    `;
+  }
+</script>
