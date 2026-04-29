@@ -51,9 +51,19 @@ function getById(id) {
   return database.executar(query);
 }
 
+function update(id, column, value) {
+  const query = `
+    UPDATE Projects SET ${column} = "${value}" WHERE id = ${id}
+  `;
+
+  console.log('Running the following query: ' + query);
+  return database.executar(query);
+}
+
 module.exports = {
   create,
   getExistingProject,
   listAll,
-  getById
+  getById,
+  update
 };

@@ -16,4 +16,8 @@ router.get('/:id', function (req, res) {
   projectsController.getById(req, res);
 });
 
+router.patch('/:id', function (req, res) {
+  projectsController.update(req, res);
+});
+
 module.exports = router;

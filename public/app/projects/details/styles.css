@@ -22,12 +22,66 @@
   margin: auto;
 }
 
+#card_container div {
+  display: flex;
+  width: fit-content;
+}
+
+#card_container div button {
+  width: 20px;
+  background: none;
+  border: none;
+}
+
+#card_container .picture_container {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+#card_container .picture_container button {
+  position: absolute;
+  right: 100px;
+  top: 4px;
+}
+
+#card_container .picture_container #input_picture {
+  position: absolute;
+  top: 8px;
+  left: 100px;
+  padding: 4px;
+  height: fit-content;
+}
+
+#card_container div button img {
+  width: 34px;
+  height: 34px;
+  background: none;
+  border: none;
+}
+
+#card_container div img {
+  width: 240px;
+  border-radius: 20px;
+  margin: auto;
+}
+
 #card_container .action_link {
   margin-left: auto;
 }
 
 #card_container .action_link img {
   width: 40px;
+}
+
+#card_container .github_container {
+  width: 100%;
+  position: relative;
+}
+
+.github_container .action_link {
+  position: absolute;
+  right: 0;
 }
 
 footer .actions_container .action_link {

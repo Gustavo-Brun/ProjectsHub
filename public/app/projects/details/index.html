@@ -75,12 +75,13 @@
         }
 
         res.json().then((data) => {
+          const fkUser = data[0].fkUser;
           const title = data[0].title;
           const picture = data[0].picture ? data[0].picture : 'no-image.jpg';
           const description = data[0].description ? data[0].description : 'Sem descrição.';
           const github = data[0].githubUrl;
 
-          renderDetails(title, picture, description, github);
+          renderDetails(fkUser, title, picture, description, github);
         });
       })
       .catch((err) => {
@@ -89,8 +90,77 @@
       });
   }
 
-  function renderDetails(title, picture, description, github) {
-    card_container.innerHTML = `
+  function renderDetails(fkUser, title, picture, description, github) {
+    if (fkUser == sessionStorage.userId) {
+      card_container.innerHTML = `
+        <div class="picture_container">
+          <img src="/pictures/${picture}" />
+          <button
+              onclick="updateDetail('picture')"
+              class="edit_button"
+          >
+            <img
+              src="/assets/imgs/edit.png"
+              alt="Edit button"
+            />
+          </button>
+          <input type="text" id="input_picture" placeholder="Nova URL">
+        </div>
+        <div>
+          <input type="text" id="input_title" value="${title}">
+          <button
+            onclick="updateDetail('title')"
+            class="edit_button"
+          >
+            <img
+              src="/assets/imgs/edit.png"
+              alt="Edit button"
+            />
+          </button>
+        </div>
+        <div>
+          <input type="text" id="input_description" value="${description}">
+           <button
+              onclick="updateDetail('description')"
+              class="edit_button"
+            >
+            <img
+              src="/assets/imgs/edit.png"
+              alt="Edit button"
+            />
+          </button>
+        </div>
+        <div class="github_container">
+          <a
+            class="action_link"
+            href="${github}"
+          >
+            <img
+              src="/assets/imgs/github.png"
+              alt="Github button"
+            />
+          </a>
+          <input type="text" id="input_github" value="${github}">
+          <button
+            onclick="updateDetail('github')"
+            class="edit_button"
+          >
+            <img
+              src="/assets/imgs/edit.png"
+              alt="Edit button"
+            />
+          </button>
+        </div>
+      `;
+
+      let updatedTitle = input_title.value;
+      let updatedPicture = input_picture.value;
+      let updatedDescription = input_description.value;
+      let updatedGithub = input_github;
+    } else {
+      console.log(picture);
+
+      card_container.innerHTML = `
         <img src="/pictures/${picture}" />
         <h1>${title}</h1>
         <p>${description}</p>
@@ -103,6 +173,53 @@
             alt="Github button"
           />
         </a>
-    `;
+      `;
+    }
+  }
+
+  function updateDetail(column) {
+    const userId = sessionStorage.userId;
+    const projectId = sessionStorage.projectId;
+
+    let value;
+
+    if (column == 'picture') {
+      value = input_picture.value;
+    } else if (column == 'title') {
+      value = input_title.value;
+    } else if (column == 'description') {
+      value = input_description.value;
+    } else if (column == 'github') {
+      value = input_github.value;
+    }
+
+    fetch(`/projects/${projectId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId,
+        column,
+        value
+      })
+    })
+      .then((res) => {
+        if (!res.ok) {
+          if (res.status == 400) {
+            alert(`Algo deu errado ao atualizar o projeto.`);
+          } else {
+            alert('Opss, algo deu errado. Tente novamente mais tarde!');
+          }
+
+          return;
+        }
+
+        window.location = '/app/projects/catalog';
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Ops, algo deu errado. Tente novamente mais tarde!');
+      });
   }
 </script>
